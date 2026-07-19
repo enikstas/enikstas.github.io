@@ -43,3 +43,50 @@ function demoChartColors() {
         purple: isDark ? '#c084fc' : '#7c3aed'
     };
 }
+
+function showDemoToast(message) {
+    let container = document.getElementById('demo-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'demo-toast-container';
+        container.style.position = 'fixed';
+        container.style.top = '1.5rem';
+        container.style.left = '50%';
+        container.style.transform = 'translateX(-50%)';
+        container.style.zIndex = '9999';
+        container.style.display = 'flex';
+        container.style.flexDirection = 'column';
+        container.style.gap = '0.5rem';
+        container.style.width = 'max-content';
+        container.style.maxWidth = '90vw';
+        document.body.appendChild(container);
+    }
+    
+    const toast = document.createElement('div');
+    toast.style.background = 'var(--bg-tertiary)';
+    toast.style.color = 'var(--text-primary)';
+    toast.style.border = '1px solid var(--border-color)';
+    toast.style.padding = '0.6rem 1.1rem';
+    toast.style.borderRadius = '12px';
+    toast.style.boxShadow = 'var(--shadow-lg)';
+    toast.style.fontFamily = 'var(--font-heading)';
+    toast.style.fontWeight = '600';
+    toast.style.fontSize = '0.82rem';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-10px)';
+    toast.style.transition = 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+    toast.textContent = message;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+    }, 10);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => { toast.remove(); }, 250);
+    }, 2800);
+}
