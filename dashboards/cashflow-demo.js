@@ -11,19 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let cashChart;
 
     function simulate(cash, revenue, expenses, delayDays) {
-        const delayMonths = delayDays / 30;
+        const delayMonths = Math.round(delayDays / 30);
         const balances = [cash];
         let runwayMonth = null;
 
         for (let m = 1; m <= MONTHS_TO_PROJECT; m++) {
-            const rampFraction = delayMonths <= 0 ? 1 : Math.min(1, m / (delayMonths + 1));
-            const revenueThisMonth = revenue * rampFraction;
+            const revenueThisMonth = (m <= delayMonths) ? 0 : revenue;
             const next = balances[m - 1] + revenueThisMonth - expenses;
             balances.push(next);
 
             if (runwayMonth === null && next <= 0) {
                 const prev = balances[m - 1];
-                const frac = prev / (prev - next);
+                const denominator = prev - next;
+                const frac = denominator === 0 ? 0 : prev / denominator;
                 runwayMonth = (m - 1) + frac;
             }
         }
@@ -48,17 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (runwayMonth === null) {
             banner.classList.add('good');
             title.textContent = 'Sustainable — 18+ months';
-            sub.textContent = 'Revenue covers expenses within the projection window.';
+            sub.textContent = netBurn <= 0 
+                ? 'Positive monthly cash flow — revenue covers all expenses.' 
+                : `Runway is secure despite a monthly burn of $${netBurn.toLocaleString()}.`;
             iconContainer.innerHTML = svgs.trendingUp;
         } else if (runwayMonth >= 8) {
             banner.classList.add('warn');
             title.textContent = `Runway: ${runwayMonth.toFixed(1)} months`;
-            sub.textContent = 'Comfortable for now, but the gap is growing.';
+            sub.textContent = `Comfortable for now, but cash is reduced by $${netBurn.toLocaleString()} each month.`;
             iconContainer.innerHTML = svgs.alertTriangle;
         } else {
             banner.classList.add('bad');
             title.textContent = `Runway: ${runwayMonth.toFixed(1)} months`;
-            sub.textContent = 'Cash runs out inside a year at this burn rate.';
+            sub.textContent = `Critical. Cash runs out within a year at a monthly burn rate of $${netBurn.toLocaleString()}.`;
             iconContainer.innerHTML = svgs.trendingDown;
         }
     }
