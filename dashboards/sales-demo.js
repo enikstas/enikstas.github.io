@@ -115,6 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     seg.style.height = `${pct}%`;
                     seg.style.backgroundColor = ds.backgroundColor;
                     seg.setAttribute('title', `${ds.label}: $${val.toLocaleString()}`);
+                    seg.addEventListener('click', () => {
+                        showDemoToast(`${ds.label}: $${val.toLocaleString()}`);
+                    });
                     col.appendChild(seg);
                 }
             });
