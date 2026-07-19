@@ -153,6 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const { balances, runwayMonth } = simulate(cash, revenue, expenses, delay);
         document.getElementById('stat-runway').textContent = runwayMonth === null ? '18+ mo' : runwayMonth.toFixed(1) + ' mo';
 
+        const chartElement = document.getElementById('cashChart');
+        const runwayText = runwayMonth === null ? '18+ months' : `${runwayMonth.toFixed(1)} months`;
+        const endingCash = balances[balances.length - 1];
+        chartElement.onclick = () => {
+            showDemoToast(`Projected Runway: ${runwayText} | Ending Cash: $${endingCash.toLocaleString()}`);
+        };
+
         updateBanner(runwayMonth, netBurn);
         renderChart(balances);
     }
