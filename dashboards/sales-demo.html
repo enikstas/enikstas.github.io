@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unified Sales & Channel Dashboard — Demo | Stanislav Enikeev</title>
+<meta name="description" content="Interactive demo: consolidated sales dashboard merging Shopify, POS, and Amazon data with live filtering.">
+<link rel="canonical" href="https://enikstas.github.io/portfolio/dashboards/sales-demo.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="demo-style.css">
+</head>
+<body>
+<header class="demo-topbar">
+    <div class="demo-container demo-topbar-inner">
+        <a href="../index.html#portfolio" class="back-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 4px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>Back to portfolio</a>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span class="demo-badge">Retail & E-commerce</span>
+            <button class="demo-theme-toggle" id="demo-theme-toggle" aria-label="Toggle dark mode">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="sun-icon" style="width: 1.1rem; height: 1.1rem;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="moon-icon" style="width: 1.1rem; height: 1.1rem;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="demo-container">
+    <div class="demo-header">
+        <h1>Unified Sales & Channel Dashboard</h1>
+        <p>A single view consolidating Shopify, in-store POS, and Amazon orders — filter by period and channel to see revenue and top products update live.</p>
+        <div class="demo-note"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 4px; display: inline-block;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>Demo uses sample data generated in the browser — no real store is connected.</div>
+    </div>
+
+    <div class="control-bar">
+        <div class="control-group">
+            <span class="control-label">Period</span>
+            <div class="tab-group" role="tablist" aria-label="Select period">
+                <button class="tab-btn active" data-period="day" role="tab" aria-selected="true">Day</button>
+                <button class="tab-btn" data-period="week" role="tab" aria-selected="false">Week</button>
+                <button class="tab-btn" data-period="month" role="tab" aria-selected="false">Month</button>
+            </div>
+        </div>
+        <div class="control-group" style="flex:1;">
+            <span class="control-label">Channels</span>
+            <div class="chip-group" id="channel-filters">
+                <button class="chip-btn active" data-channel="shopify" style="--chip-color:#0284c7; --chip-bg:#e0f2fe;"><span class="chip-dot"></span>Shopify</button>
+                <button class="chip-btn active" data-channel="pos" style="--chip-color:#0d9488; --chip-bg:#ccfbf1;"><span class="chip-dot"></span>In-store POS</button>
+                <button class="chip-btn active" data-channel="amazon" style="--chip-color:#7c3aed; --chip-bg:#f3e8ff;"><span class="chip-dot"></span>Amazon</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" id="stat-revenue">$0</div>
+            <div class="stat-change positive" id="stat-revenue-change"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 0.9rem; height: 0.9rem; vertical-align: middle; display: inline-block; margin-right: 2px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>+0%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Orders</div>
+            <div class="stat-value" id="stat-orders">0</div>
+            <div class="stat-change positive" id="stat-orders-change"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 0.9rem; height: 0.9rem; vertical-align: middle; display: inline-block; margin-right: 2px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>+0%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Avg. Order Value</div>
+            <div class="stat-value" id="stat-aov">$0</div>
+            <div class="stat-change neutral" id="stat-aov-change"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 0.9rem; height: 0.9rem; vertical-align: middle; display: inline-block; margin-right: 2px;"><line x1="5" y1="12" x2="19" y2="12"></line></svg>+0%</div>
+        </div>
+    </div>
+
+    <div class="panel-grid">
+        <div class="panel">
+            <h2>Revenue by Channel</h2>
+            <div class="chart-wrap"><div id="salesChart" style="width: 100%; height: 100%;"></div></div>
+        </div>
+        <div class="panel">
+            <h2>Top Products</h2>
+            <table class="data-table">
+                <thead><tr><th>Product</th><th>Units</th><th>Margin</th></tr></thead>
+                <tbody id="top-products-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="demo-theme.js"></script>
+<script src="sales-demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automated Cash Flow Forecaster — Demo | Stanislav Enikeev</title>
+<meta name="description" content="Interactive demo: forecast your cash runway by adjusting revenue, expenses, and client payment delay.">
+<link rel="canonical" href="https://enikstas.github.io/portfolio/dashboards/cashflow-demo.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="demo-style.css">
+</head>
+<body>
+<header class="demo-topbar">
+    <div class="demo-container demo-topbar-inner">
+        <a href="../index.html#portfolio" class="back-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 4px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>Back to portfolio</a>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span class="demo-badge">Corporate Finance</span>
+            <button class="demo-theme-toggle" id="demo-theme-toggle" aria-label="Toggle dark mode">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="sun-icon" style="width: 1.1rem; height: 1.1rem;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="moon-icon" style="width: 1.1rem; height: 1.1rem;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="demo-container">
+    <div class="demo-header">
+        <h1>Automated Cash Flow Forecaster</h1>
+        <p>Adjust monthly revenue, expenses, and how long clients take to pay — the runway forecast updates instantly below.</p>
+        <div class="demo-note"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 4px; display: inline-block;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>Demo uses a simplified model — no real accounting data is connected.</div>
+    </div>
+
+    <div class="panel-grid">
+        <div class="panel">
+            <h2>Forecast Inputs</h2>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Current Cash on Hand</span>
+                    <span class="slider-value" id="cash-value">$60,000</span>
+                </div>
+                <input type="range" id="cash-slider" min="0" max="250000" step="5000" value="60000" aria-label="Current cash on hand in dollars">
+            </div>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Monthly Revenue</span>
+                    <span class="slider-value" id="revenue-value">$22,000</span>
+                </div>
+                <input type="range" id="revenue-slider" min="0" max="80000" step="1000" value="22000" aria-label="Monthly revenue in dollars">
+            </div>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Monthly Expenses</span>
+                    <span class="slider-value" id="expenses-value">$28,000</span>
+                </div>
+                <input type="range" id="expenses-slider" min="0" max="80000" step="1000" value="28000" aria-label="Monthly expenses in dollars">
+            </div>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Client Payment Delay (days)</span>
+                    <span class="slider-value" id="delay-value">30</span>
+                </div>
+                <input type="range" id="delay-slider" min="0" max="90" step="5" value="30" aria-label="Average client payment delay in days">
+            </div>
+
+            <div class="result-banner warn" id="result-banner">
+                <div class="banner-icon-container" style="display: flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem;"></div>
+                <div>
+                    <span class="result-title" id="result-title">Runway: — months</span>
+                    <span class="result-sub" id="result-sub">Calculating…</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Snapshot</h2>
+            <div class="stat-grid" style="grid-template-columns: 1fr; gap: 0.9rem;">
+                <div class="stat-card">
+                    <div class="stat-label">Net Monthly Burn</div>
+                    <div class="stat-value" id="stat-burn">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Effective Cash Delay</div>
+                    <div class="stat-value" id="stat-delay-effect">0 mo</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Runway</div>
+                    <div class="stat-value" id="stat-runway">0 mo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel" style="margin-top:1.5rem;">
+        <h2>Projected Cash Balance</h2>
+        <div class="chart-wrap"><div id="cashChart" style="width: 100%; height: 100%;"></div></div>
+    </div>
+</div>
+
+<script src="demo-theme.js"></script>
+<script src="cashflow-demo.js"></script>
+</body>
+</html>

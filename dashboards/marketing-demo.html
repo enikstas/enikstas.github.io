@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ad Spend & Customer ROI Analyzer — Demo | Stanislav Enikeev</title>
+<meta name="description" content="Interactive demo: drag the ad spend slider to see live CAC, LTV, and ROI recalculation across channels.">
+<link rel="canonical" href="https://enikstas.github.io/portfolio/dashboards/marketing-demo.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="demo-style.css">
+</head>
+<body>
+<header class="demo-topbar">
+    <div class="demo-container demo-topbar-inner">
+        <a href="../index.html#portfolio" class="back-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 4px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>Back to portfolio</a>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span class="demo-badge">Digital Marketing</span>
+            <button class="demo-theme-toggle" id="demo-theme-toggle" aria-label="Toggle dark mode">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="sun-icon" style="width: 1.1rem; height: 1.1rem;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="moon-icon" style="width: 1.1rem; height: 1.1rem;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="demo-container">
+    <div class="demo-header">
+        <h1>Ad Spend & Customer ROI Analyzer</h1>
+        <p>Drag the monthly ad spend slider to see acquisition cost, lifetime value, and ROI recalculate instantly across Facebook and Google Ads.</p>
+        <div class="demo-note"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 4px; display: inline-block;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>Demo uses a sample response curve — no real ad account is connected.</div>
+    </div>
+
+    <div class="panel-grid">
+        <div class="panel">
+            <h2>Budget Controls</h2>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Monthly Ad Spend</span>
+                    <span class="slider-value" id="spend-value">$8,000</span>
+                </div>
+                <input type="range" id="spend-slider" min="1000" max="30000" step="500" value="8000" aria-label="Monthly ad spend in dollars">
+            </div>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Facebook / Google Split</span>
+                    <span class="slider-value" id="split-value">50 / 50</span>
+                </div>
+                <input type="range" id="split-slider" min="0" max="100" step="5" value="50" aria-label="Percent of budget allocated to Facebook Ads versus Google Ads">
+            </div>
+
+            <div class="slider-block">
+                <div class="slider-row">
+                    <span class="control-label">Avg. Customer Lifetime (months)</span>
+                    <span class="slider-value" id="lifetime-value">9</span>
+                </div>
+                <input type="range" id="lifetime-slider" min="1" max="24" step="1" value="9" aria-label="Average customer lifetime in months">
+            </div>
+
+            <div class="result-banner good" id="result-banner">
+                <div class="banner-icon-container" style="display: flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem;"></div>
+                <div>
+                    <span class="result-title" id="result-title">Healthy ROI</span>
+                    <span class="result-sub" id="result-sub">LTV comfortably covers acquisition cost.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Key Metrics</h2>
+            <div class="stat-grid" style="grid-template-columns: 1fr; gap: 0.9rem;">
+                <div class="stat-card">
+                    <div class="stat-label">Customer Acquisition Cost (CAC)</div>
+                    <div class="stat-value" id="stat-cac">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Lifetime Value (LTV)</div>
+                    <div class="stat-value" id="stat-ltv">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">LTV : CAC Ratio</div>
+                    <div class="stat-value" id="stat-ratio">0.0x</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel" style="margin-top:1.5rem;">
+        <h2>ROI Across Spend Levels</h2>
+        <div class="chart-wrap"><div id="roiChart" style="width: 100%; height: 100%;"></div></div>
+    </div>
+</div>
+
+<script src="demo-theme.js"></script>
+<script src="marketing-demo.js"></script>
+</body>
+</html>
