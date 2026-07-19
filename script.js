@@ -44,25 +44,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const metricsData = {
         revenue: {
-            title: 'Weekly Revenue',
-            value: '$18,450',
-            change: '+12.4% vs last week',
+            title: 'Daily Sales Revenue',
+            value: '$18,450 / day',
+            change: '+15.2% vs last week',
             trend: 'up',
-            bars: [60, 75, 45, 90, 80, 95, 85]
+            bars: [68, 72, 70, 82, 85, 95, 90]
         },
         channels: {
-            title: 'Top Traffic Channel',
-            value: 'Google Ads (42%)',
-            change: '+3.1% conversion rate',
+            title: 'Paid Ads Performance',
+            value: '4.2x ROI (Ads)',
+            change: '+18.4% conversion rate',
             trend: 'up',
-            bars: [40, 50, 70, 60, 85, 90, 95]
+            bars: [60, 64, 62, 75, 78, 88, 85]
         },
         products: {
-            title: 'Active Product Margins',
-            value: '68.4% Average',
-            change: '+0.8% margin optimization',
+            title: 'Optimized Margin',
+            value: '64.8% Gross Margin',
+            change: '+4.5% via automated alerts',
             trend: 'up',
-            bars: [80, 85, 90, 75, 70, 88, 92]
+            bars: [72, 74, 76, 75, 78, 82, 85]
         }
     };
 
