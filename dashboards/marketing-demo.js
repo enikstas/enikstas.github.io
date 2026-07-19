@@ -126,23 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
         linePath.setAttribute("stroke-width", "1.5");
         svg.appendChild(linePath);
         
-        if (currentDot) {
-            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle.setAttribute("cx", currentDot.x);
-            circle.setAttribute("cy", currentDot.y);
-            circle.setAttribute("r", "2.5");
-            circle.setAttribute("fill", colors.accent);
-            circle.setAttribute("stroke", "#fff");
-            circle.setAttribute("stroke-width", "0.5");
-            
-            const tooltip = document.createElementNS("http://www.w3.org/2000/svg", "title");
-            tooltip.textContent = `Spend: $${currentDot.spend.toLocaleString()}, ROI: ${currentDot.roi.toFixed(1)}%`;
-            circle.appendChild(tooltip);
-            
-            svg.appendChild(circle);
-        }
-        
         wrap.appendChild(svg);
+        
+        if (currentDot) {
+            const dot = document.createElement('div');
+            dot.className = 'chart-active-dot';
+            dot.style.left = `${currentDot.x}%`;
+            dot.style.top = `${(currentDot.y / 40) * 100}%`;
+            dot.setAttribute('title', `Spend: $${currentDot.spend.toLocaleString()}, ROI: ${currentDot.roi.toFixed(1)}%`);
+            dot.addEventListener('click', () => {
+                showDemoToast(`Spend: $${currentDot.spend.toLocaleString()}, ROI: ${currentDot.roi.toFixed(1)}%`);
+            });
+            wrap.appendChild(dot);
+        }
     }
 
     function render() {
