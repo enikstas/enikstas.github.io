@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
             bar.style.height = `${pct}%`;
             bar.style.backgroundColor = wh.color;
             bar.setAttribute('title', `${wh.name}: ${wh.val.toLocaleString()} units`);
+            bar.addEventListener('click', () => {
+                showDemoToast(`${wh.name}: ${wh.val.toLocaleString()} units`);
+            });
             col.appendChild(bar);
             
             const labelEl = document.createElement('span');
@@ -96,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
             detail.innerHTML = `
                 <td colspan="4">
                     <div class="mini-bars">
-                        <div class="mini-bar-col"><div class="mini-bar" style="height:${Math.max(6, (p.a / p.total) * 60)}px; background:var(--accent);"></div><span class="mini-bar-label">WH-A: ${p.a}</span></div>
-                        <div class="mini-bar-col"><div class="mini-bar" style="height:${Math.max(6, (p.b / p.total) * 60)}px; background:#0284c7;"></div><span class="mini-bar-label">WH-B: ${p.b}</span></div>
-                        <div class="mini-bar-col"><div class="mini-bar" style="height:${Math.max(6, (p.c / p.total) * 60)}px; background:#7c3aed;"></div><span class="mini-bar-label">WH-C: ${p.c}</span></div>
+                        <div class="mini-bar-col" onclick="showDemoToast('Warehouse A: ${p.a} units')" style="cursor:pointer;"><div class="mini-bar" style="height:${Math.max(6, (p.a / p.total) * 60)}px; background:var(--accent);"></div><span class="mini-bar-label">WH-A: ${p.a}</span></div>
+                        <div class="mini-bar-col" onclick="showDemoToast('Warehouse B: ${p.b} units')" style="cursor:pointer;"><div class="mini-bar" style="height:${Math.max(6, (p.b / p.total) * 60)}px; background:#0284c7;"></div><span class="mini-bar-label">WH-B: ${p.b}</span></div>
+                        <div class="mini-bar-col" onclick="showDemoToast('Warehouse C: ${p.c} units')" style="cursor:pointer;"><div class="mini-bar" style="height:${Math.max(6, (p.c / p.total) * 60)}px; background:#7c3aed;"></div><span class="mini-bar-label">WH-C: ${p.c}</span></div>
                     </div>
                 </td>
             `;
