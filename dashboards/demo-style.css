@@ -628,3 +628,42 @@ input[type="range"]::-moz-range-thumb {
     color: var(--text-muted);
     white-space: nowrap;
 }
+
+#roiChart, #cashChart, #salesChart, #inventoryChart {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-active-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #ffffff;
+    border: 3px solid var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    z-index: 10;
+    transition: left 0.15s ease, top 0.15s ease;
+}
+
+.chart-active-dot:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+@media (max-width: 600px) {
+    .chart-wrap {
+        height: 180px !important;
+    }
+    .custom-bar-chart {
+        min-height: 150px !important;
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+    }
+    .custom-chart-label {
+        font-size: 0.55rem;
+        bottom: -1.25rem;
+    }
+}
